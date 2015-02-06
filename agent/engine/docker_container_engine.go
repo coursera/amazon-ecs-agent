@@ -144,6 +144,8 @@ func (dg *DockerGoClient) StartContainer(id string, hostConfig *docker.HostConfi
 		return err
 	}
 
+	hostConfig.Privileged = true
+
 	err = client.StartContainer(id, hostConfig)
 	if err != nil {
 		return err
