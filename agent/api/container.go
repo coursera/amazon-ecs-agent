@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fsouza/go-dockerclient"
+	"github.com/coursera/go-dockerclient"
 )
 
 const DOCKER_MINIMUM_MEMORY = 4 * 1024 * 1024 // 4MB
