@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fsouza/go-dockerclient"
+	"github.com/coursera/go-dockerclient"
 )
 
 func (task *Task) ContainersByName() map[string]*Container {

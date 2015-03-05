@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/fsouza/go-dockerclient"
+	"github.com/coursera/go-dockerclient"
 )
 
 // PortBindingFromDockerPortBinding constructs a PortBinding slice from a docker

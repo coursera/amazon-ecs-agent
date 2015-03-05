@@ -14,7 +14,7 @@ import (
 	dockerparsers "github.com/docker/docker/pkg/parsers"
 	dockerregistry "github.com/docker/docker/registry"
 
-	docker "github.com/fsouza/go-dockerclient"
+	docker "github.com/coursera/go-dockerclient"
 )
 
 // Interface to make testing it easier
@@ -128,6 +128,9 @@ func (dg *DockerGoClient) CreateContainer(config *docker.Config, name string) (s
 	}
 	// TODO, race condition here: images should not be able to be deleted
 	// between that inspect and the CreateContainer below
+
+	config.NetworkDisabled = true
+	config.SecurityOpts = (&[1]string{"apparmor:docker-hardened"})[:]
 
 	containerOptions := docker.CreateContainerOptions{Config: config, Name: name}
 	dockerContainer, err := client.CreateContainer(containerOptions)

@@ -10,7 +10,7 @@ import (
 
 	"github.com/aws/amazon-ecs-agent/agent/api"
 	"github.com/aws/amazon-ecs-agent/agent/utils"
-	docker "github.com/fsouza/go-dockerclient"
+	docker "github.com/coursera/go-dockerclient"
 )
 
 func createTestContainer() *api.Container {
