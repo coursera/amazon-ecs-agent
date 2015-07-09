@@ -18,15 +18,15 @@ checkdockerfile:
 
 docker: checkdockerfile
 	@ln -s scripts/dockerfiles/Dockerfile.build Dockerfile
-	docker build -t "amazon/amazon-ecs-agent-build:make" .
-	docker run -v "$(shell pwd)/out:/out" "amazon/amazon-ecs-agent-build:make"
+	docker build -t "DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-grade-build:make" .
+	docker run -v "$(shell pwd)/out:/out" "DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-grade-build:make"
 	@rm -f Dockerfile
 
 # Release packages our agent into a "scratch" based dockerfile
 release: checkdockerfile certs out/amazon-ecs-agent
 	@ln -s scripts/dockerfiles/Dockerfile.release Dockerfile
-	docker build -t "amazon/amazon-ecs-agent:make" .
-	@echo "Built Docker image \"amazon/amazon-ecs-agent:make\""
+	docker build -t "DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-grade:make" .
+	@echo "Built Docker image \"DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-grade:make\""
 	@rm -f Dockerfile
 
 # There's two ways to build this; default to the docker way
@@ -36,8 +36,8 @@ out/amazon-ecs-agent: docker
 # We need to bundle certificates with our scratch-based container
 certs: misc/certs/ca-certificates.crt
 misc/certs/ca-certificates.crt:
-	docker build -t "amazon/amazon-ecs-agent-cert-source:make" misc/certs/
-	docker run "amazon/amazon-ecs-agent-cert-source:make" cat /etc/ssl/certs/ca-certificates.crt > misc/certs/ca-certificates.crt
+	docker build -t "DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-grade-cert-source:make" misc/certs/
+	docker run "DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-grade-cert-source:make" cat /etc/ssl/certs/ca-certificates.crt > misc/certs/ca-certificates.crt
 
 
 test:
@@ -45,9 +45,9 @@ test:
 
 test-in-docker: checkdockerfile
 	@ln -s scripts/dockerfiles/Dockerfile.test Dockerfile
-	docker build -t "amazon/amazon-ecs-agent-test:make" .
+	docker build -t "DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-grade-test:make" .
 	# Privileged needed for docker-in-docker so integ tests pass
-	docker run --privileged "amazon/amazon-ecs-agent-test:make"
+	docker run --privileged "DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-grade-test:make"
 	@rm -f Dockerfile
 
 coverage:
