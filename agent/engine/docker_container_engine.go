@@ -128,8 +128,10 @@ func (dg *DockerGoClient) CreateContainer(config *docker.Config, name string) (s
 	}
 	// TODO, race condition here: images should not be able to be deleted
 	// between that inspect and the CreateContainer below
-
-	config.NetworkDisabled = true
+	
+	// TURN OFF DISABLE NETWORKING FOR NOW
+	// config.NetworkDisabled = true
+	
 	config.SecurityOpts = (&[1]string{"apparmor:docker-hardened"})[:]
 
 	containerOptions := docker.CreateContainerOptions{Config: config, Name: name}
@@ -146,6 +148,10 @@ func (dg *DockerGoClient) StartContainer(id string, hostConfig *docker.HostConfi
 	if err != nil {
 		return err
 	}
+
+	// Setup local network stack for each container and not allow talking to 
+	// the outside world (via Apparmor)
+	hostConfig.NetworkMode = "none"
 
 	err = client.StartContainer(id, hostConfig)
 	if err != nil {
