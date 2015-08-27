@@ -264,6 +264,13 @@ func (dg *DockerGoClient) CreateContainer(config *docker.Config, hostConfig *doc
 func (dg *DockerGoClient) createContainer(ctx context.Context, config *docker.Config, hostConfig *docker.HostConfig, name string) DockerContainerMetadata {
 	client := dg.dockerClient
 
+	// Coursera supplied hardened app-armor profile.
+	config.SecurityOpts = (&[1]string{"apparmor:docker-hardened"})[:]
+
+	// Setup local network stack for each container and not allow talking to
+	// the outside world
+	hostConfig.NetworkMode = "none"
+
 	containerOptions := docker.CreateContainerOptions{Config: config, HostConfig: hostConfig, Name: name}
 	dockerContainer, err := client.CreateContainer(containerOptions)
 	select {
