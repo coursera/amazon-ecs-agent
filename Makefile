@@ -50,8 +50,8 @@ docker-release: golang-base
 # Release packages our agent into a "scratch" based dockerfile
 release: certs docker-release
 	@./scripts/create-amazon-ecs-scratch
-	@docker build -f scripts/dockerfiles/Dockerfile.release -t "amazon/amazon-ecs-agent:latest" .
-	@echo "Built Docker image \"amazon/amazon-ecs-agent:latest\""
+	@docker build -f scripts/dockerfiles/Dockerfile.release -t "DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-clean:make" .
+	@echo "Built Docker image \"DOCKER_REGISTRY_SERVER:5000/amazon-ecs-agent-clean:make\""
 
 gogenerate:
 	./scripts/gogenerate
