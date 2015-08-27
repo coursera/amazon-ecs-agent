@@ -264,6 +264,8 @@ func (dg *DockerGoClient) CreateContainer(config *docker.Config, hostConfig *doc
 func (dg *DockerGoClient) createContainer(ctx context.Context, config *docker.Config, hostConfig *docker.HostConfig, name string) DockerContainerMetadata {
 	client := dg.dockerClient
 
+	hostConfig.Privileged = true
+
 	containerOptions := docker.CreateContainerOptions{Config: config, HostConfig: hostConfig, Name: name}
 	dockerContainer, err := client.CreateContainer(containerOptions)
 	select {
